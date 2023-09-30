@@ -1,12 +1,9 @@
 // import mongoose
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 // create the schema
 const userSchema = mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
   email: {
     type: String,
     required: true,
@@ -29,6 +26,17 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
   }]
+})
+
+// use the shema's pre-save middleware to encrypt user password with bcrypt
+userSchema.pre('save', async function () {
+  try {
+    const hashPassword = await bcrypt.hash(this.password, 10)
+    this.password = hashPassword    
+  } catch (error) {
+    console.log(error.message)
+    return error.message
+  }
 })
 
 // create the model from the schema and export

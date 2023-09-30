@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 
 // create the schema
 const postSchema = mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
   title: {
     type: String,
     required: true
@@ -17,7 +13,8 @@ const postSchema = mongoose.Schema({
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   comment_ids: [{
     type: mongoose.Schema.Types.ObjectId,
