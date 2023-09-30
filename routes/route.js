@@ -1,3 +1,9 @@
-// import express and create the router
+// import express and create the router; import controllers
 const express = require('express')
+const { createUser } = require('../controllers/userController')
 const router = express.Router()
+
+router.post('/register', createUser)
+
+// export router
+module.exports = router

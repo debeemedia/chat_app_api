@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema({
   id: {
     type: String,
-    required: true,
     unique: true
   },
   body: {
