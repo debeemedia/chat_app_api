@@ -4,9 +4,18 @@ const UserModel = require("../models/userModel")
 
 async function createPost (req, res) {
   try {
+
+    /*USING JWT FOR AUTHENTICATION
     // get user_id from the user property of the request object we set in auth middleware
     console.log(req.user);
     const user_id = req.user.id
+    */
+
+    // using session
+    // get user_id from the user property of the request.session object in auth middleware
+    const user_id = req.session.user.id
+    console.log('sessionID:', req.sessionID);
+    console.log('user_id:', user_id);
 
     // destructure post details from request body
     const {title, body} = req.body

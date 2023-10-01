@@ -26,10 +26,18 @@ async function createUser (req, res) {
     })
     const userToSave = await newUser.save()
 
+    /* USING JWT FOR AUTHENTICATION
     // issue a jwt on registration
     const token = jwt.sign({id: userToSave._id, email: userToSave.email}, process.env.KEY, {expiresIn: '1h'})
+    
+    res.status(201).json({success: true, message: token, user: userToSave})
+    */
 
-    res.status(201).json({success: true, message: 'User created successfully', user: userToSave})
+    // create a session registration
+    console.log(req.sessionID);
+    req.session.user = {id: userToSave._id, email: userToSave.email, username: userToSave.username}
+    console.log(req.sessionID);
+    res.status(201).json({success: true, message: 'Registration successful', user: userToSave})
 
   } catch (error) {
     console.log(error.message)
@@ -52,17 +60,57 @@ async function login (req, res) {
     // compare provided password with the hashed password from the database
     bcrypt.compare(password, user.password, (err, result) => {
       if (result === true) {
-        // issue a jwt on login
-        const token = jwt.sign({id: user._id, email: user.email}, process.env.KEY, {expiresIn: '1h'})
-        res.status(200).json({success: true, message: token})
+
+        /* USING JWT FOR AUTHENTICATION
+        // // issue a jwt on login
+        // const token = jwt.sign({id: user._id, email: user.email}, process.env.KEY, {expiresIn: '1h'})
+        // res.status(200).json({success: true, message: token})
+        */
+
+        // create a session on login
+        console.log(req.session);
+        req.session.user = {id: user._id, email: user.email, username: user.username}
+        console.log(req.session);
+        res.status(200).json({success: true, message: 'Login successful'})
+
       } else {
         return res.status(401).json({success: false, message: 'Incorrect credentials'})
       }
     })
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+async function logout (req, res) {
+  try {
+    if (req.session) {
+      console.log(req.sessionID)
+      console.log(req.session)
+      req.session.destroy(err => {
+        if (err) {
+          console.log(err.message)
+          res.status(500).json({success: false, message: 'Error logging out'})
+        }
+        console.log(req.sessionID)
+        console.log(req.session)
+
+        res.clearCookie(req.sessionID)
+        console.log(req.sessionID)
+        console.log(req.session)
+        
+        res.status(200).json({success: true, message: 'Logout successful'})
+      })
+
+    } else {
+      return res.status(400).json({sucess: false, message: 'No session to destroy'})
+    }
+    
   } catch (error) {
     console.log(error.message);
     res.status(500).json({success: false, message: 'Internal server error'})
   }
 }
 
-module.exports = {createUser, login}
+module.exports = {createUser, login, logout}

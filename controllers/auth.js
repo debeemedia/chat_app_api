@@ -3,6 +3,9 @@ require('dotenv').config()
 
 async function auth (req, res, next) {
   try {
+
+    /*USING JWT FOR AUTHENTICATION
+
     // get token from request headers
     const token = req.headers.authorization
 
@@ -26,7 +29,14 @@ async function auth (req, res, next) {
       return res.status(401).json({success: false, message: error.message})
 
     }
+    */
 
+    // authenticating with session
+    if (!req.session.user) {
+      return res.status(401).json({sucess: false, message: 'You are not authorized'})
+    }
+
+    next()
     
   } catch (error) {
     // catch any other error
