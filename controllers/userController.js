@@ -33,10 +33,11 @@ async function createUser (req, res) {
     res.status(201).json({success: true, message: token, user: userToSave})
     */
 
-    // create a session registration
-    console.log(req.sessionID);
+    // create a session and a cookie on registration
     req.session.user = {id: userToSave._id, email: userToSave.email, username: userToSave.username}
-    console.log(req.sessionID);
+    res.cookie('user_id', userToSave._id, {maxAge: 3600000, path: '/'})
+    // console.log(req.cookies)
+    // console.log(req.sessionID)
     res.status(201).json({success: true, message: 'Registration successful', user: userToSave})
 
   } catch (error) {
@@ -67,10 +68,11 @@ async function login (req, res) {
         // res.status(200).json({success: true, message: token})
         */
 
-        // create a session on login
-        console.log(req.session);
+        // create a session and a cookie on login
         req.session.user = {id: user._id, email: user.email, username: user.username}
-        console.log(req.session);
+        res.cookie('user_id', user._id, {maxAge: 3600000, path: '/'})
+        // console.log(req.cookies)
+        // console.log(req.sessionID)
         res.status(200).json({success: true, message: 'Login successful'})
 
       } else {
@@ -86,20 +88,16 @@ async function login (req, res) {
 async function logout (req, res) {
   try {
     if (req.session) {
-      console.log(req.sessionID)
-      console.log(req.session)
+      // destroy the session
       req.session.destroy(err => {
         if (err) {
           console.log(err.message)
           res.status(500).json({success: false, message: 'Error logging out'})
         }
-        console.log(req.sessionID)
-        console.log(req.session)
 
-        res.clearCookie(req.sessionID)
-        console.log(req.sessionID)
-        console.log(req.session)
-        
+        // clear the cookie
+        res.clearCookie('user_id')
+       
         res.status(200).json({success: true, message: 'Logout successful'})
       })
 
