@@ -15,7 +15,17 @@ const commentSchema = new mongoose.Schema({
   post_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post'
-  }
+  },
+  // a comment can be associated with (that is, can be a reply to) another comment
+  parent_comment_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  },
+  // a comment can have comments
+  comment_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  }]
 })
 
 // create the model from the schema and export

@@ -1,4 +1,4 @@
-// import express and create the router; import controllers and postRouter
+// import express and create the router; import controllers
 const express = require('express')
 const { createPost } = require('../controllers/postController')
 const postRouter = express.Router()
@@ -6,5 +6,5 @@ const postRouter = express.Router()
 // post routes
 postRouter.post('/create', createPost)
 
-// export router
+// export post router
 module.exports = postRouter

@@ -38,6 +38,8 @@ async function createUser (req, res) {
     res.cookie('user_id', userToSave._id, {maxAge: 3600000, path: '/'})
     // console.log(req.cookies)
     // console.log(req.sessionID)
+
+    // send status message
     res.status(201).json({success: true, message: 'Registration successful', user: userToSave})
 
   } catch (error) {
@@ -73,6 +75,8 @@ async function login (req, res) {
         res.cookie('user_id', user._id, {maxAge: 3600000, path: '/'})
         // console.log(req.cookies)
         // console.log(req.sessionID)
+
+        // send status message
         res.status(200).json({success: true, message: 'Login successful'})
 
       } else {
@@ -97,7 +101,8 @@ async function logout (req, res) {
 
         // clear the cookie
         res.clearCookie('user_id')
-       
+        
+        // send status message
         res.status(200).json({success: true, message: 'Logout successful'})
       })
 

@@ -29,7 +29,7 @@ async function createPost (req, res) {
     const newPost = new PostModel({title, body, user_id})
     const postToSave = await newPost.save()
 
-    // find the id of the user and update the post_ids array from the userSchema with the new post id
+    // find the id of the user who posted and update the post_ids array from the userSchema with the new post id
     try {
       await UserModel.findByIdAndUpdate(user_id, { $push: { post_ids: postToSave._id } },  {new: true})
       
@@ -37,6 +37,7 @@ async function createPost (req, res) {
       console.log(error.message)
     }
 
+    // send status message
     res.status(201).json({success: true, message: 'Post created successfully', post: postToSave})
 
   } catch (error) {
