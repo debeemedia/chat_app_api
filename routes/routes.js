@@ -10,7 +10,7 @@ const router = express.Router()
 router.use('/users', userRouter)
 
 // use postRouter
-router.use('/posts', auth, postRouter)
+router.use('/posts', postRouter)
 
 // use commentRouter
 router.use('/posts', auth, commentRouter)

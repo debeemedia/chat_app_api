@@ -54,9 +54,6 @@ async function createCommentReply (req, res) {
     // get parent_comment_id from the params provided in the request
     const parent_comment_id = req.params.comment_id
 
-    console.log('parent comment id:', parent_comment_id);
-    console.log('req params:', req.params);
-
     // destructure comment (reply) details from request body
     const {body} = req.body
 
@@ -69,9 +66,7 @@ async function createCommentReply (req, res) {
       await UserModel.findByIdAndUpdate(user_id, {$push: {comment_ids: replyToSave._id}}, {new: true})
 
       // find the id of the comment that was replied and update the comment_ids array from the commentSchema with the new comment id
-      const commentToUpdate = await CommentModel.findByIdAndUpdate(parent_comment_id, {$push: {comment_ids: replyToSave._id}}, {new: true})
-
-      console.log('Comment to be updated:', commentToUpdate);
+      await CommentModel.findByIdAndUpdate(parent_comment_id, {$push: {comment_ids: replyToSave._id}}, {new: true})
 
     } catch (error) {
       console.log(error.message);

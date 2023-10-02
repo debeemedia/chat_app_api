@@ -2,6 +2,7 @@
 const PostModel = require("../models/postModel")
 const UserModel = require("../models/userModel")
 
+// function to create a post
 async function createPost (req, res) {
   try {
 
@@ -14,8 +15,6 @@ async function createPost (req, res) {
     // using session
     // get user_id from the user property of the request.session object in auth middleware
     const user_id = req.session.user.id
-    console.log('sessionID:', req.sessionID);
-    console.log('user_id:', user_id);
 
     // destructure post details from request body
     const {title, body} = req.body
@@ -46,4 +45,25 @@ async function createPost (req, res) {
   }
 }
 
-module.exports = {createPost}
+// function to get all posts
+async function getPosts (req, res) {
+  try {
+    const posts = await UserModel.find()
+    res.status(200).json({success: true, posts: posts})
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+// function to get a post by it's id
+async function getPost (req, res) {
+  try {
+    
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPost, getPosts, getPost}

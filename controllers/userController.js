@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 
+// function to create user (register)
 async function createUser (req, res) {
   try {
     // destructure user details from request body
@@ -48,6 +49,7 @@ async function createUser (req, res) {
   }
 }
 
+// function to login
 async function login (req, res) {
   try {
     // destructure login details from request body
@@ -89,6 +91,7 @@ async function login (req, res) {
   }
 }
 
+// function to logout
 async function logout (req, res) {
   try {
     if (req.session) {
@@ -116,4 +119,15 @@ async function logout (req, res) {
   }
 }
 
-module.exports = {createUser, login, logout}
+// function to get all users
+async function getUsers (req, res) {
+  try {
+    const users = await UserModel.find()
+    res.status(200).json({success: true, users: users})
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createUser, login, logout, getUsers}

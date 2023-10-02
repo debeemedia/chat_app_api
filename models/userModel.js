@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    trim: true
   },
   password: {
     type: String,
@@ -16,7 +17,8 @@ const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    trim: true
   },
   post_ids: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +30,7 @@ const userSchema = mongoose.Schema({
   }]
 })
 
-// use the shema's pre-save middleware to encrypt user password with bcrypt
+// use the schema's pre-save middleware to encrypt (salt and hash) user password with bcrypt
 userSchema.pre('save', async function () {
   try {
     const hashPassword = await bcrypt.hash(this.password, 10)
