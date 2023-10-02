@@ -122,7 +122,7 @@ async function logout (req, res) {
 // function to get all users
 async function getUsers (req, res) {
   try {
-    const users = await UserModel.find()
+    const users = await UserModel.find().select('-password -__v')
     res.status(200).json({success: true, users: users})
   } catch (error) {
     console.log(error.message);
@@ -130,4 +130,22 @@ async function getUsers (req, res) {
   }
 }
 
-module.exports = {createUser, login, logout, getUsers}
+// function to get a user by id
+async function getUser (req, res) {
+  try {
+    const id = req.params.user_id
+    const user = await UserModel.findById(id, '-password -__v')
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({success: false, message: 'User does not exist'})
+    }
+
+    res.status(200).json({success: true, user: user})
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createUser, login, logout, getUsers, getUser}

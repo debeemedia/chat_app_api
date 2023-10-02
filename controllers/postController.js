@@ -48,7 +48,7 @@ async function createPost (req, res) {
 // function to get all posts
 async function getPosts (req, res) {
   try {
-    const posts = await UserModel.find()
+    const posts = await PostModel.find().select('-__v')
     res.status(200).json({success: true, posts: posts})
   } catch (error) {
     console.log(error.message);
