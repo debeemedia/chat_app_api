@@ -13,8 +13,8 @@ router.use('/users', userRouter)
 router.use('/posts', auth, postRouter)
 
 // use commentRouter
-router.use('/posts/:post_id/comments', auth, commentRouter)
-router.use('/comments/:comment_id/', auth, commentRouter)
+router.use('/posts', auth, commentRouter)
+router.use('/comments', auth, commentRouter)
 
 // export router
 module.exports = router

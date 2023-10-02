@@ -4,8 +4,8 @@ const { createPostComment, createCommentReply } = require('../controllers/commen
 const commentRouter = express.Router()
 
 // comment routes
-commentRouter.post('/create', createPostComment)
-commentRouter.post('/reply', createCommentReply)
+commentRouter.post('/:post_id/comments/create', createPostComment)
+commentRouter.post('/:comment_id/reply', createCommentReply)
 
 // export comment router
 module.exports = commentRouter
