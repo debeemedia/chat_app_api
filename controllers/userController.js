@@ -133,6 +133,7 @@ async function getUsers (req, res) {
 // function to get a user by id
 async function getUser (req, res) {
   try {
+    // get id from req.params
     const id = req.params.user_id
     const user = await UserModel.findById(id, '-password -__v')
     // check if user exists

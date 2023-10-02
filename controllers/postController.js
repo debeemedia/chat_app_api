@@ -59,11 +59,52 @@ async function getPosts (req, res) {
 // function to get a post by it's id
 async function getPost (req, res) {
   try {
-    
+    // get id from req.params
+    const id = req.params.post_id
+    const post = await PostModel.findById(id, '-__v')
+    // check if post exists
+    if (!post) {
+      return res.status(404).json({success: false, message: 'Post not found'})
+    }
+
+    res.status(200).json({success: true, post: post})
+
   } catch (error) {
     console.log(error.message);
     res.status(500).json({success: false, message: 'Internal server error'})
   }
 }
 
-module.exports = {createPost, getPosts, getPost}
+// function to get all posts by a user
+async function getPostsByUser (req, res) {
+  try {
+    // get the user's id from the req.params
+    const user_id = req.params.user_id
+
+    // find the user by the id
+    const user = await UserModel.findById(user_id)
+
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({success: false, message: 'User not found'})
+    }
+
+    // from the userSchema, user.post_ids is an array of the user's post ids
+    const post_ids = user.post_ids
+
+    // map through this array of user's post ids and find the posts associated with each id
+    // use Promise.all /////////...
+    const posts = await Promise.all(post_ids.map(async post_id => {
+      const post = await PostModel.findById(post_id).select('-__v')
+      return post
+    }))
+    
+    res.status(200).json({success: true, posts: posts})
+   
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPost, getPosts, getPost, getPostsByUser}
