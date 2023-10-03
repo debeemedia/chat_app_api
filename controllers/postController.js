@@ -2,6 +2,8 @@
 const PostModel = require("../models/postModel")
 const UserModel = require("../models/userModel")
 
+// CREATE
+
 // function to create a post
 async function createPost (req, res) {
   try {
@@ -44,6 +46,8 @@ async function createPost (req, res) {
     res.status(500).json({success: false, message: 'Internal server error'})
   }
 }
+
+// READ
 
 // function to get all posts
 async function getPosts (req, res) {
@@ -92,14 +96,13 @@ async function getPostsByUser (req, res) {
     // from the userSchema, user.post_ids is an array of the user's post ids
     const post_ids = user.post_ids
 
-    // map through this array of user's post ids and find the posts associated with each id
-    // use Promise.all /////////...
-    const posts = await Promise.all(post_ids.map(async post_id => {
+    // map over this array of user's post ids and find the posts associated with each id
+    const posts = await Promise.all(post_ids.map(async (post_id) => {
       const post = await PostModel.findById(post_id).select('-__v')
       return post
     }))
     
-    res.status(200).json({success: true, posts: posts})
+    res.status(200).json({success: true, posts})
    
   } catch (error) {
     console.log(error.message);

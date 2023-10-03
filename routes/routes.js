@@ -3,7 +3,6 @@ const express = require('express')
 const userRouter = require('./userRoutes')
 const postRouter = require('./postRoutes')
 const commentRouter = require('./commentRoutes')
-const auth = require('../controllers/auth')
 const router = express.Router()
 
 // use userRouter
@@ -13,8 +12,8 @@ router.use('/users', userRouter)
 router.use('/posts', postRouter)
 
 // use commentRouter
-router.use('/posts', auth, commentRouter)
-router.use('/comments', auth, commentRouter)
+router.use('/posts', commentRouter)
+router.use('/comments', commentRouter)
 
 // export router
 module.exports = router

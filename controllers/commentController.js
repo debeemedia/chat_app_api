@@ -3,6 +3,8 @@ const CommentModel = require("../models/commentModel")
 const PostModel = require("../models/postModel")
 const UserModel = require("../models/userModel")
 
+// CREATE
+
 // function to comment on a post
 async function createPostComment (req, res) {
   try {
@@ -81,4 +83,37 @@ async function createCommentReply (req, res) {
   }
 }
 
-module.exports = {createPostComment, createCommentReply}
+// READ
+
+// function to get all comments on a post
+async function getCommentsOnPost (req, res) {
+  try {
+    const post_id = req.params.post_id
+    const post = await PostModel.findById(post_id).select('-__v')
+    const comment_ids = post.comment_ids
+    const comments = await Promise.all(comment_ids.map(async (comment_id) => {
+      const comment = await CommentModel.findById(comment_id).select('-__v')
+      return comment
+    }))
+
+    res.status(200).json({success: true, comments})
+    
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+// function to get all replies to a comment
+async function getCommentReplies (req, res) {
+  try {
+    const parent_comment_id = req.params.comment_id
+    const parent_comment = await UserModel.findById(parent_comment).select('-__v')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+
+module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies}

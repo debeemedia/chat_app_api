@@ -4,11 +4,19 @@ const { createUser, login, logout, getUsers, getUser } = require('../controllers
 const userRouter = express.Router()
 
 // user routes
-userRouter.post('/register', createUser)
-userRouter.post('/login', login)
-userRouter.get('/logout', logout)
-userRouter.get('', getUsers)
-userRouter.get('/:user_id', getUser)
+
+// POST/REGISTER
+userRouter.post('/register', createUser) // register/sign-up/create user
+
+// POST/LOGIN
+userRouter.post('/login', login) // login
+
+// GET/LOGOUT
+userRouter.get('/logout', logout) // logout
+
+// GET/READ
+userRouter.get('', getUsers) // get all users
+userRouter.get('/:user_id', getUser) // get a user by id
 
 // export user router
 module.exports = userRouter
