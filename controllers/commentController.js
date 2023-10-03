@@ -88,9 +88,14 @@ async function createCommentReply (req, res) {
 // function to get all comments on a post
 async function getCommentsOnPost (req, res) {
   try {
+    // get the post id from the req.params
     const post_id = req.params.post_id
+
+    // use the id to get the post, then get the array of comment ids for the post
     const post = await PostModel.findById(post_id).select('-__v')
     const comment_ids = post.comment_ids
+
+    // map over this array of comment ids and find the comments by their respective ids
     const comments = await Promise.all(comment_ids.map(async (comment_id) => {
       const comment = await CommentModel.findById(comment_id).select('-__v')
       return comment
@@ -107,13 +112,25 @@ async function getCommentsOnPost (req, res) {
 // function to get all replies to a comment
 async function getCommentReplies (req, res) {
   try {
+    // get the parent comment id from the req.params
     const parent_comment_id = req.params.comment_id
-    const parent_comment = await UserModel.findById(parent_comment).select('-__v')
+
+    // use the id to get the parent comment, and then the ids of the replies to the comment (in an array)
+    const parent_comment = await CommentModel.findById(parent_comment_id).select('-__v')
+    const reply_ids = parent_comment.comment_ids
+
+    // map over this array of reply ids and find the replies by their respective ids
+    const replies = await Promise.all(reply_ids.map(async (reply_id) => {
+      const reply = await CommentModel.findById(reply_id)
+      return reply
+    }))
+
+    res.status(200).json({success: true, replies})
+
   } catch (error) {
     console.log(error.message)
     res.status(500).json({success: false, message: 'Internal server error'})
   }
 }
-
 
 module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies}
