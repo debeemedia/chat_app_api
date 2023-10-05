@@ -1,6 +1,6 @@
 // import express and create the router; import controllers and middleware
 const express = require('express')
-const { createPost, getPosts, getPost, getPostsByUser, updatePost } = require('../controllers/postController')
+const { createPost, getPosts, getPost, getPostsByUser, updatePost, deletePost } = require('../controllers/postController')
 const auth = require('../controllers/auth')
 const postRouter = express.Router()
 
@@ -16,6 +16,9 @@ postRouter.get('/user/:user_id', getPostsByUser) // get all posts by a user
 
 // PUT/UPDATE
 postRouter.put('/:post_id', auth, updatePost)
+
+// DELETE
+postRouter.delete('/:post_id/delete', auth, deletePost)
 
 // export post router
 module.exports = postRouter

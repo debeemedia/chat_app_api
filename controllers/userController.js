@@ -160,7 +160,7 @@ async function getUser (req, res) {
 // UPDATE
 async function updateUser (req, res) {
   try {
-    // get user_id from the user property of the request.session object in auth middleware
+    // get user_id from the user property of the request.session object
     const user_id = req.session.user.id
 
     // find the user by id and update
@@ -174,4 +174,22 @@ async function updateUser (req, res) {
   }
 }
 
-module.exports = {createUser, login, logout, getUsers, getUser, updateUser}
+// DELETE
+async function deleteUser (req, res) {
+  try {
+  
+    // get user_id from the user property of the request.session object
+    const user_id = req.session.user.id
+
+    // find the user by id and update
+    const deletedUser = await UserModel.findByIdAndDelete(user_id)
+
+    res.status(200).json({success: true, message: `User with id ${deletedUser._id} has been deleted`})
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createUser, login, logout, getUsers, getUser, updateUser, deleteUser}

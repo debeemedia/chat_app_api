@@ -122,7 +122,7 @@ async function updatePost (req, res) {
     // get the post by id
     const post = await PostModel.findById(post_id)
     
-    // check if the user making the update is the actual poster
+    // check if the user making the update is the actual poster //with inequality not strict inequality
     if (user_id != post.user_id) {
       return res.status(401).json({success: false, message: 'You are not authorized to edit this post'})
     }
@@ -138,4 +138,43 @@ async function updatePost (req, res) {
   }
 }
 
-module.exports = {createPost, getPosts, getPost, getPostsByUser, updatePost}
+// DELETE
+async function deletePost (req, res) {
+  try {
+    // get the user id from the req.session.user
+    const user_id = req.session.user.id
+    
+    // get post_id from the req.params
+    const post_id = req.params.post_id
+    
+    // get the post by id
+    const post = await PostModel.findById(post_id)
+
+    if (!post) {
+      return res.status(404).json({success: false, message: 'Post does not exist'})
+    }
+
+    // check if the user deleting is the actual poster //with inequality not strict inequality
+    if (user_id != post.user_id) {
+      return res.status(401).json({success: false, message: 'You are not authorized to delete this post'})
+    }
+
+    // delete the post
+    const deletedPost = await PostModel.findByIdAndDelete(post_id)
+
+    // remove the post_id of the deleted post from the post_ids array of the user
+    try {
+      await UserModel.findByIdAndUpdate(user_id, {$pull: {post_ids: deletedPost._id}}, {new: true})
+    } catch (error) {
+      console.log(error.message)
+    }
+    
+    res.status(200).json({success: true, message: `Post with id ${deletedPost._id} has been deleted`})
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPost, getPosts, getPost, getPostsByUser, updatePost, deletePost}

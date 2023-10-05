@@ -1,6 +1,6 @@
 // import express and create the router; import controllers
 const express = require('express')
-const { createUser, login, logout, getUsers, getUser, updateUser } = require('../controllers/userController')
+const { createUser, login, logout, getUsers, getUser, updateUser, deleteUser } = require('../controllers/userController')
 const auth = require('../controllers/auth')
 const userRouter = express.Router()
 
@@ -21,6 +21,9 @@ userRouter.get('/:user_id', getUser) // get a user by id
 
 // PUT/UPDATE
 userRouter.put('/profile', auth, updateUser)
+
+// DELETE
+userRouter.delete('/delete', auth, deleteUser)
 
 // export user router
 module.exports = userRouter

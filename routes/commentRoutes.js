@@ -1,13 +1,13 @@
 // import express and create the router; import controllers
 const express = require('express')
-const { createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment } = require('../controllers/commentController')
+const { createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment, deleteComment } = require('../controllers/commentController')
 const auth = require('../controllers/auth')
 const commentRouter = express.Router()
 
 // comment routes
 
 // POST/CREATE
-commentRouter.post('/:post_id/comments/create', auth, createPostComment) // comment on a post
+commentRouter.post('/:post_id/create', auth, createPostComment) // comment on a post
 commentRouter.post('/:comment_id/reply', auth, createCommentReply) // reply a comment
 
 // GET/READ
@@ -17,6 +17,9 @@ commentRouter.get('/:comment_id', getCommentById) // get a comment (or a reply) 
 
 // PUT/UPDATE
 commentRouter.put('/:comment_id', auth, updateComment)
+
+// DELETE
+commentRouter.delete('/:comment_id/delete', auth, deleteComment)
 
 // export comment router
 module.exports = commentRouter

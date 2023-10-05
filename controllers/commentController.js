@@ -180,6 +180,7 @@ async function getCommentById (req, res) {
 //   }
 // }
 
+// UPDATE
 async function updateComment (req, res) {
   try {
     // get the user id from the req.session.user
@@ -191,7 +192,7 @@ async function updateComment (req, res) {
     // get the comment by id
     const comment = await CommentModel.findById(comment_id)
 
-    // check if the user making the update is the actual commenter
+    // check if the user making the update is the actual commenter //with inequality not strict inequality
     if (user_id != comment.user_id) {
       return res.status(401).json({success: false, message: 'You are not authorized to edit this comment'})
     }
@@ -207,4 +208,45 @@ async function updateComment (req, res) {
   }
 }
 
-module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment}
+// DELETE
+async function deleteComment (req, res) {
+  try {
+    // get the user id from the req.session.user
+    const user_id = req.session.user.id
+    
+    // get comment_id from the req.params
+    const comment_id = req.params.comment_id
+    
+    // get the comment by id
+    const comment = await CommentModel.findById(comment_id)
+
+    if (!comment) {
+      return res.status(404).json({success: false, message: 'Comment does not exist'})
+    }
+
+    // check if the user deleting is the actual commenter //with inequality not strict inequality
+    if (user_id != comment.user_id) {
+      return res.status(401).json({success: false, message: 'You are not authorized to delete this comment'})
+    }
+
+    // delete the comment
+    const deletedComment = await CommentModel.findByIdAndDelete(comment_id)
+
+    // remove the comment_id of the deleted comment from the comment_ids array of the user
+    try {
+      await UserModel.findByIdAndUpdate(user_id, {$pull: {comment_ids: deletedComment._id}}, {new: true})
+    } catch (error) {
+      console.log(error.message)
+    }
+
+    // remove the comment_id of the deleted comment from the comment_ids array of the post
+    
+    res.status(200).json({success: true, message: `Comment with id ${deletedComment._id} has been deleted`})
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment, deleteComment}

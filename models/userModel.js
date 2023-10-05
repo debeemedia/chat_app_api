@@ -8,7 +8,8 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
+    // lowercase: true
   },
   password: {
     type: String,
@@ -18,7 +19,8 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
+    // lowercase: true
   },
   post_ids: [{
     type: mongoose.Schema.Types.ObjectId,
