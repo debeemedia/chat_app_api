@@ -133,4 +133,78 @@ async function getCommentReplies (req, res) {
   }
 }
 
-module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies}
+// function to get a comment (or a reply) by its id
+async function getCommentById (req, res) {
+  try {
+    const id = req.params.comment_id
+    const comment = await CommentModel.findById(id).select('-__v')
+    // check if comment exists
+    if (!comment) {
+      return res.status(404).json({success: false, message: 'Comment not found'})
+    }
+    res.status(200).json({success: true, comment})
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+// // function to get a user's comments on a post
+// async function getUserCommentsOnPost (req, res) {
+//   try {
+//     // get user_id from the user property of the request.session object in auth middleware
+//     const user_id = req.session.user.id
+
+//     // get the post id from the req.params
+//     const post_id = req.params.post_id
+
+//     // find the user with the user_id
+//     const user = await UserModel.findById(user_id)
+
+//     // find the post with the post_id
+//     const post = await PostModel.findById(post_id)
+
+//     // // get the post comments, get the user comments, the ones that match
+
+//     // const postCommentIds = post.comment_ids
+//     // const userCommentIds = user.comment_ids
+
+//     const comments = await CommentModel.find({user_id, post_id})
+//     console.log(comments);
+
+
+//   } catch (error) {
+//     console.log(error.message)
+//     res.status(500).json({success: false, message: 'Internal server error'})
+//   }
+// }
+
+async function updateComment (req, res) {
+  try {
+    // get the user id from the req.session.user
+    const user_id = req.session.user.id
+
+    // get comment_id from the req.params
+    const comment_id = req.params.comment_id
+
+    // get the comment by id
+    const comment = await CommentModel.findById(comment_id)
+
+    // check if the user making the update is the actual commenter
+    if (user_id != comment.user_id) {
+      return res.status(401).json({success: false, message: 'You are not authorized to edit this comment'})
+    }
+    
+    // update the comment
+    const updatedComment = await CommentModel.findByIdAndUpdate(comment_id, req.body, {new: true})
+
+    res.status(200).json({success: true, updatedComment})
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment}

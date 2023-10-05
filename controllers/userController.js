@@ -157,4 +157,21 @@ async function getUser (req, res) {
   }
 }
 
-module.exports = {createUser, login, logout, getUsers, getUser}
+// UPDATE
+async function updateUser (req, res) {
+  try {
+    // get user_id from the user property of the request.session object in auth middleware
+    const user_id = req.session.user.id
+
+    // find the user by id and update
+    const updatedUser = await UserModel.findByIdAndUpdate(user_id, req.body, {new: true})
+
+    res.status(200).json({success: true, updatedUser})
+    
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createUser, login, logout, getUsers, getUser, updateUser}

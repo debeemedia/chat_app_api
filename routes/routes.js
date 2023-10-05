@@ -12,7 +12,6 @@ router.use('/users', userRouter)
 router.use('/posts', postRouter)
 
 // use commentRouter
-router.use('/posts', commentRouter)
 router.use('/comments', commentRouter)
 
 // export router

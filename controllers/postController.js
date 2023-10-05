@@ -15,7 +15,7 @@ async function createPost (req, res) {
     */
 
     // using session
-    // get user_id from the user property of the request.session object in auth middleware
+    // get user_id from the user property of the request.session object (that we set when registering the user)
     const user_id = req.session.user.id
 
     // destructure post details from request body
@@ -110,4 +110,32 @@ async function getPostsByUser (req, res) {
   }
 }
 
-module.exports = {createPost, getPosts, getPost, getPostsByUser}
+// UPDATE
+async function updatePost (req, res) {
+  try {
+    // get the user id from the req.session.user
+    const user_id = req.session.user.id
+    
+    // get post_id from the req.params
+    const post_id = req.params.post_id
+    
+    // get the post by id
+    const post = await PostModel.findById(post_id)
+    
+    // check if the user making the update is the actual poster
+    if (user_id != post.user_id) {
+      return res.status(401).json({success: false, message: 'You are not authorized to edit this post'})
+    }
+    
+    // update the post
+    const updatedPost = await PostModel.findByIdAndUpdate(post_id, req.body, {new: true})
+
+    res.status(200).json({success: true, updatedPost})
+    
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
+
+module.exports = {createPost, getPosts, getPost, getPostsByUser, updatePost}
