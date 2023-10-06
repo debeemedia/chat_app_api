@@ -1,7 +1,7 @@
 // import express and create the router; import controllers
 const express = require('express')
 const { createUser, login, logout, getUsers, getUser, updateUser, deleteUser } = require('../controllers/userController')
-const auth = require('../controllers/auth')
+const auth = require('../middleware/auth')
 const userRouter = express.Router()
 
 // user routes

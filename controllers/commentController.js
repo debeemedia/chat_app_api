@@ -15,6 +15,12 @@ async function createPostComment (req, res) {
     const post_id = req.params.post_id
     // console.log(post_id);
 
+    // check if post_id is valid
+    const post = await PostModel.findById(post_id)
+    if (!post) {
+      return res.status(400).json({success: false, message: 'Invalid post id'})
+    }
+
     // destructure comment details from request body
     const {body} = req.body
 
@@ -55,6 +61,12 @@ async function createCommentReply (req, res) {
 
     // get parent_comment_id from the params provided in the request
     const parent_comment_id = req.params.comment_id
+
+    // check if comment_id is valid
+    const comment = await CommentModel.findById(parent_comment_id)
+    if (!comment) {
+      return res.status(400).json({success: false, message: 'Invalid comment id'})
+    }
 
     // destructure comment (reply) details from request body
     const {body} = req.body
@@ -150,35 +162,28 @@ async function getCommentById (req, res) {
   }
 }
 
-// // function to get a user's comments on a post
-// async function getUserCommentsOnPost (req, res) {
-//   try {
-//     // get user_id from the user property of the request.session object in auth middleware
-//     const user_id = req.session.user.id
+// function to get a user's comments on a post
+async function getUserCommentsOnPost (req, res) {
+  try {
+    // get user_id from the user property of the request.session object in auth middleware
+    const user_id = req.session.user.id
 
-//     // get the post id from the req.params
-//     const post_id = req.params.post_id
+    // get the post id from the req.params
+    const post_id = req.params.post_id
 
-//     // find the user with the user_id
-//     const user = await UserModel.findById(user_id)
+    // find all the user's comments
+    const userComments = await CommentModel.find({user_id})
 
-//     // find the post with the post_id
-//     const post = await PostModel.findById(post_id)
+    // find the user's comments specific to the post
+    const postComments = userComments.filter(userComment => userComment.post_id == post_id)
 
-//     // // get the post comments, get the user comments, the ones that match
-
-//     // const postCommentIds = post.comment_ids
-//     // const userCommentIds = user.comment_ids
-
-//     const comments = await CommentModel.find({user_id, post_id})
-//     console.log(comments);
-
-
-//   } catch (error) {
-//     console.log(error.message)
-//     res.status(500).json({success: false, message: 'Internal server error'})
-//   }
-// }
+    res.status(200).json({success: true, postComments})
+    
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({success: false, message: 'Internal server error'})
+  }
+}
 
 // UPDATE
 async function updateComment (req, res) {
@@ -240,6 +245,20 @@ async function deleteComment (req, res) {
     }
 
     // remove the comment_id of the deleted comment from the comment_ids array of the post
+    try {
+      const post_id = comment.post_id
+      await PostModel.findByIdAndUpdate(post_id, {$pull: {comment_ids: deletedComment._id}}, {new: true})
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    // remove the comment_id of a deleted reply to a comment from the comment_ids array of the parent comment
+    try {
+      const parent_comment_id = comment.parent_comment_id
+      await CommentModel.findByIdAndUpdate(parent_comment_id, {$pull: {comment_ids: deletedComment._id}}, {new: true})
+    } catch (error) {
+      console.log(error.message);
+    }
     
     res.status(200).json({success: true, message: `Comment with id ${deletedComment._id} has been deleted`})
 
@@ -249,4 +268,4 @@ async function deleteComment (req, res) {
   }
 }
 
-module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, updateComment, deleteComment}
+module.exports = {createPostComment, createCommentReply, getCommentsOnPost, getCommentReplies, getCommentById, getUserCommentsOnPost, updateComment, deleteComment}
