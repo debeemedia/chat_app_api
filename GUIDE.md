@@ -1,3 +1,6 @@
+NB: Replace 'http://localhost:2023' with 'https://debeechatapi.onrender.com'
+
+
 GET Home
 http://localhost:2023/
 
