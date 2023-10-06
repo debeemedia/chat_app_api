@@ -24,7 +24,7 @@ app.use(session({
 app.use(router)
 
 // connect to database
-mongoose.connect('mongodb://127.0.0.1:27017/week_fourteen')
+mongoose.connect(process.env.MONGO_URL)
 const database = mongoose.connection
 database.on('error', error => console.log('Error connecting to database', error.message))
 database.once('connected', () => console.log('Database connected'))
