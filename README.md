@@ -1,6 +1,7 @@
 ## Week 14
 #### Tasks 1-2
 
+### [DEPLOYED LINK](https://debeechatapi.onrender.com/)
 ## How to run/test this project
 * ensure you have git installed properly on your machine
 * ensure you have node js installed in your machine
