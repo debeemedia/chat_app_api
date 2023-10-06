@@ -5,6 +5,11 @@ const postRouter = require('./postRoutes')
 const commentRouter = require('./commentRoutes')
 const router = express.Router()
 
+// home route
+router.get('/', (req, res) => {
+  res.status(200).json({success: true, message: 'Welcome to debeeChat'})
+})
+
 // use userRouter
 router.use('/users', userRouter)
 
