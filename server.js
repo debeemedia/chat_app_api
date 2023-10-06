@@ -23,7 +23,7 @@ app.use(session({
 }))
 app.use(router)
 
-// connect to database
+// connect to the database
 mongoose.connect(process.env.MONGO_URL)
 const database = mongoose.connection
 database.on('error', error => console.log('Error connecting to database', error.message))
