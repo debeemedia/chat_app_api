@@ -1,3 +1,7 @@
+GET Home
+http://localhost:2023/
+
+
 POST: REGISTER (CREATE USER)
 http://localhost:2023/users/register
 {
