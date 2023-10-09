@@ -103,8 +103,13 @@ async function getCommentsOnPost (req, res) {
     // get the post id from the req.params
     const post_id = req.params.post_id
 
-    // use the id to get the post, then get the array of comment ids for the post
+    // use the id to get the post
     const post = await PostModel.findById(post_id).select('-__v')
+    // check if post exists
+    if (!post) {
+      return res.status(404).json({success: false, message: 'Post does not exist'})
+    }
+    // get the array of comment ids for the post
     const comment_ids = post.comment_ids
 
     // map over this array of comment ids and find the comments by their respective ids
