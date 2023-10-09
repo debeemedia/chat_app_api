@@ -33,7 +33,7 @@ async function auth (req, res, next) {
 
     // authenticating with session
     if (!req.session.user) {
-      return res.status(401).json({sucess: false, message: 'You are not logged in'})
+      return res.status(401).json({sucess: false, message: 'User not logged in'})
     }
 
     next()
