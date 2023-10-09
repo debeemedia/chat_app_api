@@ -186,6 +186,7 @@ async function getUserCommentsOnPost (req, res) {
     const post_id = req.params.post_id
 
     // check if post exists
+    const post = await PostModel.findById(post_id).select('-__v')
     if (!post) {
       return res.status(404).json({success: false, message: 'Post does not exist'})
     }
