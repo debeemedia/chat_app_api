@@ -7,7 +7,7 @@ const router = express.Router()
 
 // home route
 router.get('/', (req, res) => {
-  res.status(200).json({success: true, message: 'Welcome to debeeChat'})
+  res.status(200).json({success: true, message: 'Welcome to deBeeChat'})
 })
 
 // use userRouter

@@ -150,6 +150,7 @@ async function deletePost (req, res) {
     // get the post by id
     const post = await PostModel.findById(post_id)
 
+    // check if post exists
     if (!post) {
       return res.status(404).json({success: false, message: 'Post does not exist'})
     }

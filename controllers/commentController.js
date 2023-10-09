@@ -18,7 +18,7 @@ async function createPostComment (req, res) {
     // check if post_id is valid
     const post = await PostModel.findById(post_id)
     if (!post) {
-      return res.status(400).json({success: false, message: 'Invalid post id'})
+      return res.status(404).json({success: false, message: 'Post does not exist'})
     }
 
     // destructure comment details from request body
@@ -65,7 +65,7 @@ async function createCommentReply (req, res) {
     // check if comment_id is valid
     const comment = await CommentModel.findById(parent_comment_id)
     if (!comment) {
-      return res.status(400).json({success: false, message: 'Invalid comment id'})
+      return res.status(404).json({success: false, message: 'Comment does not exist'})
     }
 
     // destructure comment (reply) details from request body
