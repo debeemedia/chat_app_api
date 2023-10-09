@@ -2,6 +2,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const router = require('./routes/routes')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
@@ -13,6 +14,9 @@ const port = process.env.PORT || 2024
 const app = express()
 
 // use middleware
+app.use(cors({
+  origin: '*'
+}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(session({
