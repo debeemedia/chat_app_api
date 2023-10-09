@@ -7,7 +7,7 @@ const router = express.Router()
 
 // home route
 router.get('/', (req, res) => {
-  res.status(200).json({success: true, message: 'Welcome to deBeeChat'})
+  res.status(200).json({success: true, message: 'Welcome to deBeeChat', docs: 'https://debeemedia.notion.site/debeemedia/deBeeChat-API-4c44564df90d460da19815bb32d87ad7'})
 })
 
 // use userRouter

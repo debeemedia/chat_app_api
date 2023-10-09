@@ -2,6 +2,7 @@
 #### Tasks 1-2
 
 ### [DEPLOYED LINK](https://debeechatapi.onrender.com/)
+### [DOCUMENTATION](https://debeemedia.notion.site/debeemedia/deBeeChat-API-4c44564df90d460da19815bb32d87ad7)
 ## How to run/test this project
 * ensure you have git installed properly on your machine
 * ensure you have node js installed in your machine

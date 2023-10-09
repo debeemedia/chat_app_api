@@ -245,6 +245,7 @@ async function deleteComment (req, res) {
     // get the comment by id
     const comment = await CommentModel.findById(comment_id)
 
+    // check if the comment exists
     if (!comment) {
       return res.status(404).json({success: false, message: 'Comment does not exist'})
     }
