@@ -185,6 +185,11 @@ async function getUserCommentsOnPost (req, res) {
     // get the post id from the req.params
     const post_id = req.params.post_id
 
+    // check if post exists
+    if (!post) {
+      return res.status(404).json({success: false, message: 'Post does not exist'})
+    }
+
     // find all the user's comments
     const userComments = await CommentModel.find({user_id})
 
