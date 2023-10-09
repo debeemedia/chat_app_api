@@ -68,7 +68,7 @@ async function getPost (req, res) {
     const post = await PostModel.findById(id, '-__v')
     // check if post exists
     if (!post) {
-      return res.status(404).json({success: false, message: 'Post not found'})
+      return res.status(404).json({success: false, message: 'Post does not exist'})
     }
 
     res.status(200).json({success: true, post: post})
@@ -90,7 +90,7 @@ async function getPostsByUser (req, res) {
 
     // check if user exists
     if (!user) {
-      return res.status(404).json({success: false, message: 'User not found'})
+      return res.status(404).json({success: false, message: 'User does not exist'})
     }
 
     // from the userSchema, user.post_ids is an array of the user's post ids

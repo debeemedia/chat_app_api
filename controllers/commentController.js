@@ -152,7 +152,7 @@ async function getCommentById (req, res) {
     const comment = await CommentModel.findById(id).select('-__v')
     // check if comment exists
     if (!comment) {
-      return res.status(404).json({success: false, message: 'Comment not found'})
+      return res.status(404).json({success: false, message: 'Comment does not exist'})
     }
     res.status(200).json({success: true, comment})
 
