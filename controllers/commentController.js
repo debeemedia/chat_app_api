@@ -15,10 +15,10 @@ async function createPostComment (req, res) {
     const post_id = req.params.post_id
     // console.log(post_id);
 
-    // check if post_id is valid
+    // check if post_id is valid (i.e if post exists)
     const post = await PostModel.findById(post_id)
     if (!post) {
-      return res.status(400).json({success: false, message: 'Invalid post id'})
+      return res.status(400).json({success: false, message: 'Post does not exist'})
     }
 
     // destructure comment details from request body
@@ -62,10 +62,10 @@ async function createCommentReply (req, res) {
     // get parent_comment_id from the params provided in the request
     const parent_comment_id = req.params.comment_id
 
-    // check if comment_id is valid
+    // check if comment_id is valid (i.e if comment exists)
     const comment = await CommentModel.findById(parent_comment_id)
     if (!comment) {
-      return res.status(400).json({success: false, message: 'Invalid comment id'})
+      return res.status(400).json({success: false, message: 'Comment does not exist'})
     }
 
     // destructure comment (reply) details from request body
@@ -103,8 +103,15 @@ async function getCommentsOnPost (req, res) {
     // get the post id from the req.params
     const post_id = req.params.post_id
 
-    // use the id to get the post, then get the array of comment ids for the post
+    // use the id to get the post
     const post = await PostModel.findById(post_id).select('-__v')
+
+    // check if post exists
+    if (!post) {
+      return res.status(400).json({success: false, message: 'Post does not exist'})
+    }
+
+    // get the array of comment ids for the post
     const comment_ids = post.comment_ids
 
     // map over this array of comment ids and find the comments by their respective ids
@@ -127,8 +134,15 @@ async function getCommentReplies (req, res) {
     // get the parent comment id from the req.params
     const parent_comment_id = req.params.comment_id
 
-    // use the id to get the parent comment, and then the ids of the replies to the comment (in an array)
+    // use the id to get the parent comment
     const parent_comment = await CommentModel.findById(parent_comment_id).select('-__v')
+
+    // check if comment exists
+    if (!parent_comment) {
+      return res.status(400).json({success: false, message: 'Comment does not exist'})
+    }
+
+    // get the ids of the replies to the comment (in an array)
     const reply_ids = parent_comment.comment_ids
 
     // map over this array of reply ids and find the replies by their respective ids
@@ -171,6 +185,11 @@ async function getUserCommentsOnPost (req, res) {
     // get the post id from the req.params
     const post_id = req.params.post_id
 
+    // check if post exists
+    if (!post) {
+      return res.status(400).json({success: false, message: 'Post does not exist'})
+    }
+
     // find all the user's comments
     const userComments = await CommentModel.find({user_id})
 
@@ -196,6 +215,11 @@ async function updateComment (req, res) {
 
     // get the comment by id
     const comment = await CommentModel.findById(comment_id)
+
+    // check if comment exists
+    if (!comment) {
+      return res.status(400).json({success: false, message: 'Comment does not exist'})
+    }
 
     // check if the user making the update is the actual commenter //with inequality not strict inequality
     if (user_id != comment.user_id) {
@@ -225,6 +249,7 @@ async function deleteComment (req, res) {
     // get the comment by id
     const comment = await CommentModel.findById(comment_id)
 
+    // check if comment exists
     if (!comment) {
       return res.status(404).json({success: false, message: 'Comment does not exist'})
     }
