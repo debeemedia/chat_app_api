@@ -105,10 +105,12 @@ async function getCommentsOnPost (req, res) {
 
     // use the id to get the post
     const post = await PostModel.findById(post_id).select('-__v')
+
     // check if post exists
     if (!post) {
       return res.status(404).json({success: false, message: 'Post does not exist'})
     }
+
     // get the array of comment ids for the post
     const comment_ids = post.comment_ids
 
@@ -132,8 +134,15 @@ async function getCommentReplies (req, res) {
     // get the parent comment id from the req.params
     const parent_comment_id = req.params.comment_id
 
-    // use the id to get the parent comment, and then the ids of the replies to the comment (in an array)
+    // use the id to get the parent comment
     const parent_comment = await CommentModel.findById(parent_comment_id).select('-__v')
+
+    // check if comment exists
+    if (!parent_comment) {
+      return res.status(404).json({success: false, message: 'Comment does not exist'})
+    }
+
+    // get the ids of the replies to the comment (in an array)
     const reply_ids = parent_comment.comment_ids
 
     // map over this array of reply ids and find the replies by their respective ids
