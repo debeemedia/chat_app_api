@@ -58,6 +58,7 @@ async function login (req, res) {
   try {
     // destructure login details from request body
     const {email, username, password} = req.body
+    // allow user to login with password and email or username or both
     if (!password && (!email || !username)) {
       return res.status(400).json({success: false, message: 'Enter your credentials'})
     }
