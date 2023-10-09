@@ -20,6 +20,8 @@ const postSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
   }]
+}, {
+  timestamps: true
 })
 
 // create the model from the schema and export
