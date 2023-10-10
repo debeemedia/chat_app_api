@@ -34,13 +34,16 @@ const userSchema = mongoose.Schema({
 
 // use the schema's pre-save middleware to encrypt (salt and hash) user password with bcrypt
 userSchema.pre('save', async function () {
-    try {
-        const hashPassword = await bcrypt.hash(this.password, 10)
-        this.password = hashPassword    
-    } catch (error) {
-        console.log(error.message)
-        return error.message
+  // introduce a check to optimize code by hashing password only when it's created or modified
+  try {
+    if (this.isModified('password')) {
+      const hashPassword = await bcrypt.hash(this.password, 10)
+      this.password = hashPassword
     }
+  } catch (error) {
+    console.log(error.message)
+    return error.message
+  }
 })
 
 // create the model from the schema and export
