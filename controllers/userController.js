@@ -161,11 +161,21 @@ async function getUser (req, res) {
 // UPDATE
 async function updateUser (req, res) {
   try {
+    // destructure user's input from the request body
+    const {email, username, password} = req.body
+
     // get user_id from the user property of the request.session object
     const user_id = req.session.user.id
+    // use the user_id to find the user
+    const user = await UserModel.findById(user_id)
 
-    // find the user by id and update
-    const updatedUser = await UserModel.findByIdAndUpdate(user_id, req.body, {new: true})
+    // conditions to check the user's input and modify the data in the database accordingly
+    if (email) user.email = email
+    if (username) user.username = username
+    if (password) user.password = password
+
+    // save the modifications (save will trigger the presave middleware in user model to hash the password too)
+    const updatedUser = await user.save()
 
     res.status(200).json({success: true, updatedUser})
     
