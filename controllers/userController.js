@@ -36,7 +36,7 @@ async function createUser (req, res) {
       to: email,
       from: 'deBee Chat',
       subject: 'Registration Successful',
-      html: await renderWelcomeMessage(username)
+      html: await renderWelcomeMessage(username, userToSave)
     }
     await sendMail(emailOption, res)
 
@@ -87,6 +87,10 @@ async function login (req, res) {
         // const token = jwt.sign({id: user._id, email: user.email}, process.env.KEY, {expiresIn: '1h'})
         // res.status(200).json({success: true, message: token})
         */
+
+        if (!user.verified) {
+          return res.status(400).json({success: false, message: 'Please verify your account'})
+        }
 
         // create a session and a cookie on login
         req.session.user = {id: user._id, email: user.email, username: user.username}
