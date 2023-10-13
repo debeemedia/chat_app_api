@@ -1,8 +1,10 @@
 // import user model and jsonwebtoken, bcrypt and dotenv packages
 const UserModel = require("../models/userModel");
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const { sendMail, renderWelcomeMessage } = require("../utils/mail");
 require('dotenv').config()
+
 
 // CREATE/REGISTER
 
@@ -28,6 +30,15 @@ async function createUser (req, res) {
       email, password, username, post_ids, comment_ids
     })
     const userToSave = await newUser.save()
+
+    // send a mail to user on successful registration
+    const emailOption = {
+      to: email,
+      from: 'deBee Chat',
+      subject: 'Registration Successful',
+      html: await renderWelcomeMessage(username)
+    }
+    await sendMail(emailOption, res)
 
     /* USING JWT FOR AUTHENTICATION
     // issue a jwt on registration

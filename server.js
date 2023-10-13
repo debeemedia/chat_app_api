@@ -25,6 +25,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {}
 }))
+app.set('views', './views')
+app.set('view engine', 'ejs')
 app.use(router)
 
 // connect to the database
