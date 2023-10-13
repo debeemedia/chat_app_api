@@ -6,6 +6,7 @@ const cors = require('cors')
 const router = require('./routes/routes')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 
 // set port
 const port = process.env.PORT || 2024
@@ -25,6 +26,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {}
 }))
+app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', './views')
 app.set('view engine', 'ejs')
 app.use(router)
