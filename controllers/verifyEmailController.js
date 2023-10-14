@@ -19,7 +19,7 @@ async function verifyEmail (req, res) {
 
 async function getVerifiedPage (req, res) {
     try {
-        res.render('views/verifiedPage.ejs')
+        res.render('/verifiedPage')
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({success: false, message: 'Internal server error'})
