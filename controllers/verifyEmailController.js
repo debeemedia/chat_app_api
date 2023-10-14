@@ -13,8 +13,8 @@ async function verifyEmail (req, res) {
 
         res.status(200).json({success: true, message: 'User verified successfully'})
 
-        // redirect the user to the verified successful page
-        res.redirect('/verified')
+        // // redirect the user to the verified successful page
+        // res.redirect('/verified')
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({success: false, message: 'Internal server error'})
