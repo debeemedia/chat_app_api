@@ -1,5 +1,6 @@
 const UserModel = require("../models/userModel");
 
+// function to verify the email
 async function verifyEmail (req, res) {
     try {
         const email = req.query.email
@@ -9,7 +10,10 @@ async function verifyEmail (req, res) {
         }
         user.verified = true
         await user.save()
-        // res.status(200).json({success: true, message: 'User verified successfully'})
+
+        res.status(200).json({success: true, message: 'User verified successfully'})
+
+        // redirect the user to the verified successful page
         res.redirect('/verified')
     } catch (error) {
         console.log(error.message)
@@ -17,6 +21,7 @@ async function verifyEmail (req, res) {
     }
 }
 
+// function to get the verification successful page
 async function getVerifiedPage (req, res) {
     try {
         res.render('verifiedPage')
