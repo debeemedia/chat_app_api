@@ -1,6 +1,7 @@
 // import mongoose
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const { boolean } = require('yargs')
 
 // create the schema
 const userSchema = mongoose.Schema({
@@ -29,7 +30,11 @@ const userSchema = mongoose.Schema({
   comment_ids: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
-  }]
+  }],
+  verified: {
+    type: Boolean,
+    default: false
+  }
 })
 
 // use the schema's pre-save middleware to encrypt (salt and hash) user password with bcrypt

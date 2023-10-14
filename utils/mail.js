@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-async function renderWelcomeMessage (username) {
-    return await ejs.renderFile('views/welcomeMessage.ejs', {username})
+async function renderWelcomeMessage (username, user) {
+    return await ejs.renderFile('views/welcomeMessage.ejs', {username, user})
 }
 
 async function sendMail (option, res) {
