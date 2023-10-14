@@ -11,9 +11,10 @@ router.get('/', (req, res) => {
   res.status(200).json({success: true, message: 'Welcome to deBeeChat', docs: 'https://debeemedia.notion.site/debeemedia/deBeeChat-API-4c44564df90d460da19815bb32d87ad7'})
 })
 
-// verification route
+// verification routes
+// verify email
 router.get('/verify', verifyEmail)
-
+// get verified successful page
 router.get('/verified', getVerifiedPage)
 
 // use userRouter
