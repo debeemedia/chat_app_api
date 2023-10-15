@@ -88,8 +88,9 @@ async function login (req, res) {
         // res.status(200).json({success: true, message: token})
         */
 
+        // check if user is verified
         if (!user.verified) {
-          return res.status(400).json({success: false, message: 'Please verify your account'})
+          return res.status(403).json({success: false, message: 'User is not verified'})
         }
 
         // create a session and a cookie on login

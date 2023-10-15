@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
 // verification routes
 // verify email
 router.get('/verify', verifyEmail)
-// get verified successful page
-router.get('/verified', getVerifiedPage)
+// // get verified successful page
+// router.get('/verified', getVerifiedPage)
 
 // use userRouter
 router.use('/users', userRouter)
