@@ -2,7 +2,7 @@
 const UserModel = require("../models/userModel");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const { sendMail, renderWelcomeMessage } = require("../utils/mail");
+const { sendMail, renderMessage } = require("../utils/mail");
 require('dotenv').config()
 
 
@@ -36,7 +36,7 @@ async function createUser (req, res) {
       to: email,
       from: 'deBee Chat',
       subject: 'Registration Successful',
-      html: await renderWelcomeMessage(username, userToSave)
+      html: await renderMessage('welcomeMessage.ejs', userToSave)
     }
     await sendMail(emailOption, res)
 
