@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 })
 
 // function to render the email welcome message
-async function renderMessage (filePath, user) {
-    return await ejs.renderFile(`views/${filePath}`, user)
+async function renderMessage (filePath, user,) {
+    return await ejs.renderFile(`views/${filePath}`, user,)
 }
 
 // function to send mail
