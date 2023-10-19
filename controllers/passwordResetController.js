@@ -41,7 +41,7 @@ async function generateResetToken (req, res) {
         }
         await sendMail(emailOption, res)
 
-        res.status(200).json({success: true, token: tokenToSave.token, message: 'Token expires in 5 minutes'})
+        res.status(200).json({success: true, message: 'Token expires in 5 minutes'})
 
     } catch (error) {
         console.log(error.message)
@@ -83,7 +83,7 @@ async function resetPassword (req, res) {
 
         // check if token exists in the database
         if (!issuedToken) {
-            return res.status(401).json({success: false, message: 'Invalid or expired token'})
+            return res.status(403).json({success: false, message: 'Invalid or expired token'})
         }
 
         // check if the token from the url and the token in the database match
