@@ -2,6 +2,8 @@
 const express = require('express')
 const { createUser, login, logout, getUsers, getUser, updateUser, deleteUser } = require('../controllers/userController')
 const auth = require('../middleware/auth')
+const { verifyEmail, getVerifiedPage } = require('../controllers/verifyEmailController')
+const { generateResetToken, resetPassword } = require('../controllers/passwordResetController')
 const userRouter = express.Router()
 
 // user routes
@@ -9,11 +11,23 @@ const userRouter = express.Router()
 // POST/REGISTER
 userRouter.post('/register', createUser) // register/sign-up/create user
 
+// verification routes
+// verify email
+userRouter.get('/verify', verifyEmail)
+// // get verified successful page
+// router.get('/verified', getVerifiedPage)
+
 // POST/LOGIN
 userRouter.post('/login', login) // login
 
 // GET/LOGOUT
 userRouter.get('/logout', logout) // logout
+
+// password reset routes
+// forgot password route
+userRouter.post('/forgot-password', generateResetToken)
+// reset password route
+userRouter.post('/reset-password', resetPassword)
 
 // GET/READ
 userRouter.get('', getUsers) // get all users
