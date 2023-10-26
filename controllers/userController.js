@@ -20,7 +20,7 @@ async function createUser (req, res) {
     }
 
     // check if user already exists
-    const oldUser = await UserModel.findOne({email})
+    const oldUser = await UserModel.findOne({$or: [{email}, {username}]})
     if (oldUser) {
       return res.status(400).json({success: false, message: 'User already exists'})
     }
