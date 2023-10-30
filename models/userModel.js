@@ -23,6 +23,9 @@ const userSchema = mongoose.Schema({
     trim: true,
     lowercase: true
   },
+  profile_picture: {
+    type: String
+  },
   post_ids: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post'

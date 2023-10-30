@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const { sendMail, renderMessage } = require("../utils/mail");
 require('dotenv').config()
 
-
 // CREATE/REGISTER
 
 // function to create user (register)
@@ -25,9 +24,13 @@ async function createUser (req, res) {
       return res.status(400).json({success: false, message: 'User already exists'})
     }
 
+    // access the uploaded file URL from req.file (uploaded by multer)
+    const default_profile_url = 'https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg'
+    const profile_picture_url = req.file ? req.file.path : default_profile_url;
+
     // create new user and save to database
     const newUser = await new UserModel({
-      email, password, username, post_ids, comment_ids
+      email, password, username, profile_picture: profile_picture_url, post_ids, comment_ids
     })
     const userToSave = await newUser.save()
 
@@ -178,7 +181,7 @@ async function getUser (req, res) {
 async function updateUser (req, res) {
   try {
     // destructure user's input from the request body
-    const {email, username, password} = req.body
+    const {email, username, password, profile_picture} = req.body
 
     // get user_id from the user property of the request.session object
     const user_id = req.session.user.id
@@ -189,6 +192,7 @@ async function updateUser (req, res) {
     if (email) user.email = email
     if (username) user.username = username
     if (password) user.password = password
+    if (profile_picture) user.profile_picture = profile_picture
 
     // save the modifications (save will trigger the presave middleware in user model to hash the password too)
     const updatedUser = await user.save()

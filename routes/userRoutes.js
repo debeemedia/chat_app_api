@@ -4,12 +4,13 @@ const { createUser, login, logout, getUsers, getUser, updateUser, deleteUser } =
 const auth = require('../middleware/auth')
 const { verifyEmail, getVerifiedPage } = require('../controllers/verifyEmailController')
 const { generateResetToken, resetPassword } = require('../controllers/passwordResetController')
+const upload = require('../utils/imageUpload')
 const userRouter = express.Router()
 
 // user routes
 
 // POST/REGISTER
-userRouter.post('/register', createUser) // register/sign-up/create user
+userRouter.post('/register', upload.single('profile_picture'), createUser) // register/sign-up/create user
 
 // verification routes
 // verify email
