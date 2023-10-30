@@ -25,7 +25,8 @@ async function createUser (req, res) {
     }
 
     // access the uploaded file URL from req.file (uploaded by multer)
-    const profile_picture_url = req.file ? req.file.path : '';
+    const default_profile_url = 'https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg'
+    const profile_picture_url = req.file ? req.file.path : default_profile_url;
 
     // create new user and save to database
     const newUser = await new UserModel({
