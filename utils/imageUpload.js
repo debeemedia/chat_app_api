@@ -17,7 +17,7 @@ const storage = new CloudinaryStorage({
     params: {
         folder: 'debeechat/profile-pictures',
         // allowed_formats: ['jpg', 'jpeg', 'png'],
-        transformation: [{width: 200, height: 200, crop: 'limit'}]
+        transformation: [{width: 500, height: 500, crop: 'limit'}]
     }
 })
 
