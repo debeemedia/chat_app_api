@@ -35,7 +35,7 @@ userRouter.get('', getUsers) // get all users
 userRouter.get('/:user_id', getUser) // get a user by id
 
 // PUT/UPDATE
-userRouter.put('/profile', auth, updateUser)
+userRouter.put('/profile', auth, upload.single('profile_picture'), updateUser)
 
 // DELETE
 userRouter.delete('/delete', auth, deleteUser)

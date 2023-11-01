@@ -192,7 +192,10 @@ async function updateUser (req, res) {
     if (email) user.email = email
     if (username) user.username = username
     if (password) user.password = password
-    if (profile_picture) user.profile_picture = profile_picture
+    if (req.file) {
+      const profile_picture_url = req.file.path
+      user.profile_picture = profile_picture_url
+    }
 
     // save the modifications (save will trigger the presave middleware in user model to hash the password too)
     const updatedUser = await user.save()
