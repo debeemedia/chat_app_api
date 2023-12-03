@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- linking to stylesheet not working -->
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <title>Welcome</title>
     <style>
@@ -34,14 +32,11 @@
 <body>
     <div class="welcome-message">
         <h1>Hello <%= username %></h1>
-        <!-- internal image linking not working -->
-        <!-- <img src="/images/introduction.png" alt="Welcome icon"> -->
         <img src="https://supportforsingleparents.org/wp-content/uploads/2017/05/welcome-icon.jpg" alt="Welcome icon">
         <h2>Welcome to <span class="biz-name">deBee Chat</span><br><span class="uppercase">Your account has been successfully created.</span></h2>
         <p>We are excited to have you on board.</p>
         <p>Thank you for choosing us. Enjoy your experience!</p><br>
         <strong><a href="https://debeechatapi.onrender.com/users/verify/?email=<%=email%>">Click to verify your account</a></strong>
-        <!-- <p>Thank you for choosing us. Enjoy your experience!</p><br>
         <strong><a href="http://localhost:2023/users/verify/?email=<%=email%>">Click to verify your account</a></strong> -->
     </div>
 </body>
