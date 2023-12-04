@@ -25,6 +25,10 @@ const commentSchema = new mongoose.Schema({
   comment_ids: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
+  }],
+  like_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Like'
   }]
 }, {
   timestamps: true
