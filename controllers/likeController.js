@@ -8,7 +8,7 @@ async function createPostLike (req, res) {
 		// get the id of the user
 		const user_id = req.session.user.id
 		// get the id of the post being liked
-		const post_id = req.params.id
+		const post_id = req.params.post_id
 		if (!post_id) {
 			return res.status(400).json({success: false, message: 'Please provide a post id in params'})
 		}
@@ -33,7 +33,7 @@ async function createCommentLike (req, res) {
 		// get the id of the user
 		const user_id = req.session.user.id
 		// get the id of the comment being liked
-		const comment_id = req.params.id
+		const comment_id = req.params.comment_id
 		if (!comment_id) {
 			return res.status(400).json({success: false, message: 'Please provide a comment id in params'})
 		}
