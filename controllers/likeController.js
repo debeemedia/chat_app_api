@@ -86,11 +86,26 @@ async function deleteLike (req, res) {
       return res.status(401).json({success: false, message: 'You are not authorized to delete this like'})
     }
 		await LikeModel.findByIdAndDelete(like_id)
-		await UserModel.findByIdAndUpdate(user_id, {$pull: {like_ids: like._id}}, {new: true})
-		// const 
+		await UserModel.findByIdAndUpdate(user_id, {$pull: {like_ids: like._id}})
+		
+		if (like.post_id) {
+			await PostModel.findByIdAndUpdate(like.post_id, {$pull: {like_ids: like._id}})
+		} else if (like.comment_id) {
+			await CommentModel.findByIdAndUpdate(like.comment_id, {$pull: {like_ids: like._id}})
+		}
+
+    res.status(200).json({success: true, message: `Like with id ${like._id} has been deleted`})
+
 
 	} catch (error) {
 		console.log(error.message)
 		res.status(500).json({success: false, message: 'Internal server error'})
 	}
+}
+
+module.exports = {
+	createPostLike,
+	createCommentLike,
+	getLikeById,
+	deleteLike
 }
