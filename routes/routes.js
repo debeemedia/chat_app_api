@@ -3,6 +3,7 @@ const express = require('express')
 const userRouter = require('./userRoutes')
 const postRouter = require('./postRoutes')
 const commentRouter = require('./commentRoutes')
+const likeRouter = require('./likeRoutes')
 const router = express.Router()
 
 // home route
@@ -18,6 +19,9 @@ router.use('/posts', postRouter)
 
 // use commentRouter
 router.use('/comments', commentRouter)
+
+// use likeRouter
+router.use('/likes', likeRouter)
 
 // export router
 module.exports = router
