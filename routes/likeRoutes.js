@@ -4,8 +4,8 @@ const { createPostLike, createCommentLike, getLikeById, deleteLike } = require('
 const likeRouter = express.Router()
 
 // POST/CREATE
-likeRouter.post('/:post_id/create', auth, createPostLike)
-likeRouter.post('/:comment_id/create', auth, createCommentLike)
+likeRouter.post('/post/:post_id/create', auth, createPostLike)
+likeRouter.post('/comment/:comment_id/create', auth, createCommentLike)
 
 // GET
 likeRouter.get('/:like_id', getLikeById)
