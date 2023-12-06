@@ -14,13 +14,11 @@ const likeSchema = new mongoose.Schema({
 	},
 	post_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Post',
-		required: true
+		ref: 'Post'
 	},
 	comment_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Comment',
-		required: true
+		ref: 'Comment'
 	}
 })
 
