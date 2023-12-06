@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 
 const likeSchema = new mongoose.Schema({
 	like: {
-		type: Number,
+		type: Boolean,
 		required: true,
-		default: 1,
+		default: true,
 		max: 1
 	},
 	user_id: {
