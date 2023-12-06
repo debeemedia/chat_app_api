@@ -82,7 +82,7 @@ async function deleteLike (req, res) {
 		if (!like) {
 			return res.status(404).json({success: false, message: 'Like does not exist'})
 		}
-		if (user_id != like._id) {
+		if (user_id != like.user_id) {
       return res.status(401).json({success: false, message: 'You are not authorized to delete this like'})
     }
 		await LikeModel.findByIdAndDelete(like_id)
