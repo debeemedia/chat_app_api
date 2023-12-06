@@ -1,4 +1,6 @@
 // import models
+const CommentModel = require("../models/commentModel")
+const LikeModel = require("../models/likeModel")
 const PostModel = require("../models/postModel")
 const UserModel = require("../models/userModel")
 
@@ -159,6 +161,10 @@ async function deletePost (req, res) {
     if (user_id != post.user_id) {
       return res.status(401).json({success: false, message: 'You are not authorized to delete this post'})
     }
+
+    // // delete other resources dependent on post
+    // await CommentModel.deleteMany({post_id})
+    // await LikeModel.deleteMany({post_id})
 
     // delete the post
     const deletedPost = await PostModel.findByIdAndDelete(post_id)
