@@ -63,7 +63,7 @@ async function getPostLikes (req, res) {
 		if (postLikes.length < 1) {
 			return res.status(404).json({success: false, message: 'No post likes found'})
 		}
-		res.status(200).json({success: true, message: postLikes})
+		res.status(200).json({success: true, postLikes})
 	} catch (error) {
 		console.log(error.message)
 		res.status(500).json({success: false, message: 'Internal server error'})
@@ -80,7 +80,7 @@ async function getCommentLikes (req, res) {
 		if (commentLikes.length < 1) {
 			return res.status(404).json({success: false, message: 'No comment likes found'})
 		}
-		res.status(200).json({success: true, message: commentLikes})
+		res.status(200).json({success: true, commentLikes})
 	} catch (error) {
 		console.log(error.message)
 		res.status(500).json({success: false, message: 'Internal server error'})
