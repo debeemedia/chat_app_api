@@ -53,6 +53,40 @@ async function createCommentLike (req, res) {
 	}
 }
 
+async function getPostLikes (req, res) {
+	try {
+		const post_id = req.params.post_id
+		// get the post and populate the like_ids field with the actual document from the like model
+		const post = await PostModel.findById(post_id).populate('like_ids').select('-__v')
+		// send only the like_ids in response
+		const postLikes = post.like_ids
+		if (postLikes.length < 1) {
+			return res.status(404).json({success: false, message: 'No post likes found'})
+		}
+		res.status(200).json({success: true, message: postLikes})
+	} catch (error) {
+		console.log(error.message)
+		res.status(500).json({success: false, message: 'Internal server error'})
+	}
+}
+
+async function getCommentLikes (req, res) {
+	try {
+		const comment_id = req.params.comment_id
+		// get the comment and populate the like_ids field with the actual document from the like model
+		const comment = await CommentModel.findById(comment_id).populate('like_ids').select('-__v')
+		// send only the like_ids in response
+		const commentLikes = comment.like_ids
+		if (commentLikes.length < 1) {
+			return res.status(404).json({success: false, message: 'No comment likes found'})
+		}
+		res.status(200).json({success: true, message: commentLikes})
+	} catch (error) {
+		console.log(error.message)
+		res.status(500).json({success: false, message: 'Internal server error'})
+	}
+}
+
 async function getLikeById (req, res) {
 	try {
 		const id = req.params.like_id
@@ -106,6 +140,8 @@ async function deleteLike (req, res) {
 module.exports = {
 	createPostLike,
 	createCommentLike,
+	getPostLikes,
+	getCommentLikes,
 	getLikeById,
 	deleteLike
 }
